@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конструктор мапи міста</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Шапка з breadcrumbs -->
+    <header class="header">
+        <div class="breadcrumbs">
+            <a href="#" class="breadcrumb-item">Головна</a>
+            <span class="breadcrumb-separator">→</span>
+            <a href="#" class="breadcrumb-item">Планування</a>
+            <span class="breadcrumb-separator">→</span>
+            <span class="breadcrumb-item active">Новий район</span>
+        </div>
+        <h1 class="header-title">Конструктор мапи міста</h1>
+        <p class="header-subtitle">Інтерактивне створення плану розбудови</p>
+    </header>
+
+    <div class="container">
+        <!-- Бічна панель з інструментами -->
+        <aside class="sidebar">
+            <!-- Секція додавання об'єктів -->
+            <section class="tools-section">
+                <h2 class="section-title">
+                    <i class="fas fa-plus-circle"></i> Об'єкти
+                </h2>
+                <div class="tools-grid">
+                    <button 
+                        class="tool-btn" 
+                        data-type="house"
+                        title="Клікніть на мапу для додавання житлового будинку"
+                    >
+                        <i class="fas fa-home"></i>
+                        <span>Будинки</span>
+                    </button>
+                    <button 
+                        class="tool-btn" 
+                        data-type="road"
+                        title="Клікніть на мапу для додавання дороги"
+                    >
+                        <i class="fas fa-road"></i>
+                        <span>Дороги</span>
+                    </button>
+                    <button 
+                        class="tool-btn" 
+                        data-type="school"
+                        title="Клікніть на мапу для додавання школи"
+                    >
+                        <i class="fas fa-school"></i>
+                        <span>Школи</span>
+                    </button>
+                    <button 
+                        class="tool-btn" 
+                        data-type="hospital"
+                        title="Клікніть на мапу для додавання лікарні"
+                    >
+                        <i class="fas fa-hospital"></i>
+                        <span>Лікарні</span>
+                    </button>
+                    <button 
+                        class="tool-btn" 
+                        data-type="park"
+                        title="Клікніть на мапу для додавання парку"
+                    >
+                        <i class="fas fa-tree"></i>
+                        <span>Парки</span>
+                    </button>
+                </div>
+                <div class="mode-indicator" id="modeIndicator">
+                    <span class="mode-text">Готово до додавання</span>
+                </div>
+            </section>
+
+            <!-- Секція фільтрації -->
+            <section class="tools-section">
+                <h2 class="section-title">
+                    <i class="fas fa-filter"></i> Фільтр
+                </h2>
+                <div class="filters">
+                    <label class="filter-item">
+                        <input type="checkbox" data-filter="house" class="filter-checkbox" checked>
+                        <span class="filter-label">
+                            <i class="fas fa-home" style="color: #FF6B6B;"></i>
+                            Будинки
+                        </span>
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" data-filter="road" class="filter-checkbox" checked>
+                        <span class="filter-label">
+                            <i class="fas fa-road" style="color: #4A90E2;"></i>
+                            Дороги
+                        </span>
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" data-filter="school" class="filter-checkbox" checked>
+                        <span class="filter-label">
+                            <i class="fas fa-school" style="color: #F5A623;"></i>
+                            Школи
+                        </span>
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" data-filter="hospital" class="filter-checkbox" checked>
+                        <span class="filter-label">
+                            <i class="fas fa-hospital" style="color: #D84449;"></i>
+                            Лікарні
+                        </span>
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" data-filter="park" class="filter-checkbox" checked>
+                        <span class="filter-label">
+                            <i class="fas fa-tree" style="color: #52C41A;"></i>
+                            Парки
+                        </span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Секція дій -->
+            <section class="tools-section">
+                <h2 class="section-title">
+                    <i class="fas fa-cog"></i> Дії
+                </h2>
+                <button class="action-btn primary-btn" id="saveBtn">
+                    <i class="fas fa-save"></i> Зберегти план
+                </button>
+                <button class="action-btn secondary-btn" id="undoBtn" disabled>
+                    <i class="fas fa-undo"></i> Скасувати
+                </button>
+                <button class="action-btn danger-btn" id="clearBtn">
+                    <i class="fas fa-trash"></i> Очистити
+                </button>
+            </section>
+
+            <!-- Статистика -->
+            <section class="tools-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i> Статистика
+                </h2>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Усього об'єктів:</span>
+                        <span class="stat-value" id="totalObjects">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Будинків:</span>
+                        <span class="stat-value" id="houseCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Доріг:</span>
+                        <span class="stat-value" id="roadCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Шкіл:</span>
+                        <span class="stat-value" id="schoolCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Лікарень:</span>
+                        <span class="stat-value" id="hospitalCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Парків:</span>
+                        <span class="stat-value" id="parkCount">0</span>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <!-- Головна область з СВГ-мапою -->
+        <main class="main-content">
+            <svg id="canvas" class="canvas"></svg>
+        </main>
+    </div>
+
+    <!-- Повідомлення про збереження -->
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">План успішно збережено!</span>
+    </div>
+
+    <!-- Модальне вікно для видалення -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <h3>Видалити об'єкт?</h3>
+            <p>Ви впевнені, що хочете видалити цей об'єкт?</p>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel-btn" id="cancelDeleteBtn">Скасувати</button>
+                <button class="modal-btn delete-btn" id="confirmDeleteBtn">Видалити</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

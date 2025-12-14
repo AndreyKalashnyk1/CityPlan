@@ -1,0 +1,704 @@
+/* ============================================================
+   КОНСТРУКТОР МАПИ МІСТА - СТИЛІ
+   ============================================================
+   Кольорова схема: суміжна (зелений, синій, сірий)
+   Макет: CSS Flexbox + Grid
+   ============================================================ */
+
+/* ============================================================
+   ЗМІННІ КОЛЬОРІВ
+   ============================================================ */
+:root {
+    /* Основні кольори */
+    --primary-green: #52C41A;
+    --secondary-blue: #4A90E2;
+    --accent-gray: #F0F2F5;
+    --dark-gray: #262626;
+    --light-gray: #FAFAFA;
+
+    /* Кольори об'єктів */
+    --color-house: #FF6B6B;
+    --color-road: #4A90E2;
+    --color-school: #F5A623;
+    --color-hospital: #D84449;
+    --color-park: #52C41A;
+
+    /* Нейтральні */
+    --text-primary: #1F2937;
+    --text-secondary: #6B7280;
+    --border-color: #E5E7EB;
+    --bg-light: #FFFFFF;
+    --bg-dark: #F9FAFB;
+
+    /* Прозорість */
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.15);
+
+    /* Шрифти */
+    --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* ============================================================
+   СКИДАННЯ СТИЛІВ
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--text-primary);
+    background-color: var(--bg-light);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   ШАПКА (HEADER) - Visibility of system status
+   ============================================================ */
+.header {
+    background: linear-gradient(135deg, var(--secondary-blue), var(--primary-green));
+    color: white;
+    padding: 1.5rem 2rem;
+    box-shadow: var(--shadow);
+    position: relative;
+    z-index: 100;
+}
+
+.breadcrumbs {
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.breadcrumb-item {
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.breadcrumb-item:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    opacity: 1;
+    font-weight: 600;
+}
+
+.breadcrumb-separator {
+    margin: 0 0.5rem;
+    opacity: 0.8;
+}
+
+.header-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.header-subtitle {
+    font-size: 1rem;
+    opacity: 0.95;
+    font-weight: 400;
+}
+
+/* ============================================================
+   КОНТЕЙНЕР
+   ============================================================ */
+.container {
+    display: flex;
+    gap: 0;
+    min-height: calc(100vh - 160px);
+    background-color: var(--bg-dark);
+}
+
+/* ============================================================
+   БІЧНА ПАНЕЛЬ (SIDEBAR)
+   ============================================================ */
+.sidebar {
+    width: 300px;
+    background-color: var(--bg-light);
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    padding: 1.5rem 1rem;
+    box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.02);
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* ============================================================
+   СЕКЦІЇ ПАНЕЛІ
+   ============================================================ */
+.tools-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tools-section:last-child {
+    border-bottom: none;
+}
+
+.section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    color: var(--secondary-blue);
+    font-size: 1.1rem;
+}
+
+/* ============================================================
+   СІТКА ІНСТРУМЕНТІВ (Affordance)
+   ============================================================ */
+.tools-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.tool-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+}
+
+.tool-btn i {
+    font-size: 1.5rem;
+    color: var(--secondary-blue);
+}
+
+.tool-btn:hover {
+    border-color: var(--secondary-blue);
+    background-color: var(--accent-gray);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+}
+
+.tool-btn:active {
+    transform: translateY(0);
+}
+
+/* Активна кнопка */
+.tool-btn.active {
+    border-color: var(--primary-green);
+    background: linear-gradient(135deg, rgba(82, 196, 26, 0.1), rgba(74, 144, 226, 0.1));
+    box-shadow: 0 0 0 3px rgba(82, 196, 26, 0.1);
+}
+
+.tool-btn.active i {
+    color: var(--primary-green);
+    animation: pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* ============================================================
+   ІНДИКАТОР РЕЖИМУ (Visibility of system status)
+   ============================================================ */
+.mode-indicator {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: var(--accent-gray);
+    border-radius: 6px;
+    border-left: 4px solid var(--secondary-blue);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.mode-indicator.active {
+    border-left-color: var(--primary-green);
+    background-color: rgba(82, 196, 26, 0.08);
+    color: var(--primary-green);
+    font-weight: 500;
+}
+
+/* ============================================================
+   ФІЛЬТРИ
+   ============================================================ */
+.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.filter-item:hover {
+    background-color: var(--accent-gray);
+}
+
+.filter-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--secondary-blue);
+}
+
+.filter-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.filter-label i {
+    font-size: 1rem;
+}
+
+/* ============================================================
+   КНОПКИ ДІЙ
+   ============================================================ */
+.action-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    margin-bottom: 0.5rem;
+}
+
+.primary-btn {
+    background-color: var(--primary-green);
+    color: white;
+}
+
+.primary-btn:hover {
+    background-color: #45a515;
+    box-shadow: 0 4px 12px rgba(82, 196, 26, 0.3);
+    transform: translateY(-2px);
+}
+
+.primary-btn:active {
+    transform: translateY(0);
+}
+
+.secondary-btn {
+    background-color: var(--secondary-blue);
+    color: white;
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background-color: #3a7ccc;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    transform: translateY(-2px);
+}
+
+.secondary-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.secondary-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.danger-btn {
+    background-color: #FF6B6B;
+    color: white;
+}
+
+.danger-btn:hover {
+    background-color: #E63946;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    transform: translateY(-2px);
+}
+
+.danger-btn:active {
+    transform: translateY(0);
+}
+
+/* ============================================================
+   СТАТИСТИКА
+   ============================================================ */
+.stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--accent-gray);
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.stat-value {
+    color: var(--primary-green);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* ============================================================
+   ГОЛОВНА ОБЛАСТЬ З МАПОЮ
+   ============================================================ */
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-dark);
+    overflow: hidden;
+    position: relative;
+}
+
+.canvas {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+    cursor: crosshair;
+}
+
+.canvas.normal {
+    cursor: default;
+}
+
+/* ============================================================
+   СВГ-ЕЛЕМЕНТИ НА МАПІ
+   ============================================================ */
+.map-object {
+    cursor: grab;
+    transition: filter 0.2s ease;
+}
+
+.map-object:hover {
+    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.2));
+}
+
+.map-object.dragging {
+    cursor: grabbing;
+    filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.3));
+}
+
+.map-object.selected {
+    filter: drop-shadow(0 0 12px rgba(82, 196, 26, 0.6));
+}
+
+/* Стилі для різних типів об'єктів */
+.object-house {
+    fill: var(--color-house);
+}
+
+.object-road {
+    fill: var(--color-road);
+}
+
+.object-school {
+    fill: var(--color-school);
+}
+
+.object-hospital {
+    fill: var(--color-hospital);
+}
+
+.object-park {
+    fill: var(--color-park);
+}
+
+/* ============================================================
+   ПОВІДОМЛЕННЯ ПРО ЗБЕРЕЖЕННЯ (Feedback)
+   ============================================================ */
+.notification {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-green);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    z-index: 1000;
+    transition: bottom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.notification.show {
+    bottom: 2rem;
+}
+
+.notification i {
+    font-size: 1.3rem;
+}
+
+/* ============================================================
+   МОДАЛЬНЕ ВІКНО (User control and freedom)
+   ============================================================ */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    max-width: 400px;
+    text-align: center;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content h3 {
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+}
+
+.modal-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn {
+    background-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.cancel-btn:hover {
+    background-color: var(--accent-gray);
+}
+
+.delete-btn {
+    background-color: #FF6B6B;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #E63946;
+}
+
+/* ============================================================
+   АДАПТИВНА ВЕРСТКА (Desktop-first)
+   ============================================================ */
+@media (max-width: 1200px) {
+    .sidebar {
+        width: 280px;
+    }
+
+    .header-title {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        gap: 0;
+        min-height: auto;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 1rem 1rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        max-height: 300px;
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+    }
+
+    .sidebar::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .tools-section {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+        flex-shrink: 0;
+        min-width: 250px;
+    }
+
+    .section-title {
+        font-size: 0.875rem;
+    }
+
+    .tools-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .tool-btn {
+        padding: 0.5rem;
+        font-size: 0.65rem;
+    }
+
+    .tool-btn i {
+        font-size: 1.25rem;
+    }
+
+    .header-title {
+        font-size: 1.5rem;
+    }
+
+    .header-subtitle {
+        font-size: 0.875rem;
+    }
+
+    .breadcrumbs {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .header-title {
+        font-size: 1.25rem;
+    }
+
+    .modal-content {
+        margin: 1rem;
+        max-width: none;
+    }
+}
+
+/* ============================================================
+   ДРУК
+   ============================================================ */
+@media print {
+    .sidebar,
+    .header,
+    .notification,
+    .modal {
+        display: none;
+    }
+
+    .container {
+        min-height: auto;
+    }
+
+    .main-content {
+        box-shadow: none;
+    }
+}
