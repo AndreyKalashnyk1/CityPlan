@@ -234,7 +234,7 @@ class CityMapConstructor {
         const clickedObject = this.getObjectAtPoint(x, y);
 
         if (clickedObject) {
-            this.selectObject(clickedObject);
+            this.selectObject(clickedObject, e);
             return;
         }
 
@@ -268,7 +268,7 @@ class CityMapConstructor {
 
         // Змінити курсор на grabbable коли наводимо на об'єкт
         const hoverObject = this.getObjectAtPoint(x, y);
-        if (hoverObject) {
+        if (hoverObject && !this.selectedTool) {
             this.canvas.style.cursor = 'grab';
         } else if (this.selectedTool) {
             this.canvas.style.cursor = 'crosshair';
@@ -280,6 +280,7 @@ class CityMapConstructor {
     handleCanvasMouseUp() {
         this.isDragging = false;
         if (this.selectedObject) {
+            this.selectedObject = null;
             this.render();
         }
     }
@@ -310,12 +311,13 @@ class CityMapConstructor {
     // ВИДІЛЕННЯ ОБ'ЄКТА
     // ============================================================
 
-    selectObject(obj) {
+    selectObject(obj, e) {
+        e.preventDefault();
         this.selectedObject = obj;
         this.isDragging = true;
         const rect = this.canvas.getBoundingClientRect();
-        const mouseX = event.clientX - rect.left;
-        const mouseY = event.clientY - rect.top;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
         this.dragOffset = {
             x: mouseX - obj.x,
             y: mouseY - obj.y,
