@@ -10,7 +10,6 @@
 </head>
 
 <body>
-    <!-- Шапка з breadcrumbs -->
     <header class="header">
         <div class="breadcrumbs">
             <a href="#" class="breadcrumb-item">Головна</a>
@@ -24,9 +23,7 @@
     </header>
 
     <div class="container">
-        <!-- Бічна панель з інструментами -->
         <aside class="sidebar">
-            <!-- Секція додавання об'єктів -->
             <section class="tools-section">
                 <h2 class="section-title">
                     <i class="fas fa-plus-circle"></i> Об'єкти
@@ -58,7 +55,6 @@
                 </div>
             </section>
 
-            <!-- Секція фільтрації -->
             <section class="tools-section">
                 <h2 class="section-title">
                     <i class="fas fa-filter"></i> Фільтр
@@ -102,7 +98,6 @@
                 </div>
             </section>
 
-            <!-- Секція дій -->
             <section class="tools-section">
                 <h2 class="section-title">
                     <i class="fas fa-cog"></i> Дії
@@ -118,7 +113,6 @@
                 </button>
             </section>
 
-            <!-- Статистика -->
             <section class="tools-section">
                 <h2 class="section-title">
                     <i class="fas fa-chart-bar"></i> Статистика
@@ -152,19 +146,16 @@
             </section>
         </aside>
 
-        <!-- Головна область з СВГ-мапою -->
         <main class="main-content">
             <svg id="canvas" class="canvas"></svg>
         </main>
     </div>
 
-    <!-- Повідомлення про збереження -->
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i>
         <span id="notificationText">План успішно збережено!</span>
     </div>
 
-    <!-- Модальне вікно для видалення -->
     <div class="modal" id="deleteModal">
         <div class="modal-content">
             <h3>Видалити об'єкт?</h3>

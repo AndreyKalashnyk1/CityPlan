@@ -1,19 +1,3 @@
-/* ============================================================
-   КОНСТРУКТОР МАПИ МІСТА - JAVASCRIPT ЛОГІКА
-   ============================================================
-   Функціональність:
-   - Додавання об'єктів на СВГ-мапу
-   - Drag & drop маніпулювання
-   - Фільтрація об'єктів
-   - Видалення об'єктів
-   - Скасування дій (undo)
-   - Збереження у localStorage
-   ============================================================ */
-
-// ============================================================
-// КОНФІГУРАЦІЯ
-// ============================================================
-
 const CONFIG = {
     objects: {
         house: {
@@ -53,13 +37,8 @@ const CONFIG = {
     },
 };
 
-// ============================================================
-// КЛАС КОНСТРУКТОРА КАРТИ
-// ============================================================
-
 class CityMapConstructor {
     constructor() {
-        // Стан додатку
         this.objects = [];
         this.history = [];
         this.selectedTool = null;
@@ -74,7 +53,6 @@ class CityMapConstructor {
             park: true,
         };
 
-        // Посилання на елементи DOM
         this.canvas = document.getElementById('canvas');
         this.toolButtons = document.querySelectorAll('.tool-btn');
         this.filterCheckboxes = document.querySelectorAll('.filter-checkbox');
@@ -88,7 +66,6 @@ class CityMapConstructor {
         this.confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
         this.notificationText = document.getElementById('notificationText');
 
-        // Счетчики статистики
         this.statsElements = {
             totalObjects: document.getElementById('totalObjects'),
             houseCount: document.getElementById('houseCount'),
@@ -98,13 +75,8 @@ class CityMapConstructor {
             parkCount: document.getElementById('parkCount'),
         };
 
-        // Ініціалізація
         this.init();
     }
-
-    // ============================================================
-    // ІНІЦІАЛІЗАЦІЯ
-    // ============================================================
 
     init() {
         this.loadFromStorage();
@@ -115,28 +87,23 @@ class CityMapConstructor {
     }
 
     attachEventListeners() {
-        // Кнопки інструментів
         this.toolButtons.forEach((btn) => {
             btn.addEventListener('click', () => this.selectTool(btn));
         });
 
-        // Холст
         this.canvas.addEventListener('click', (e) => this.handleCanvasClick(e));
         this.canvas.addEventListener('mousemove', (e) => this.handleCanvasMouseMove(e));
         this.canvas.addEventListener('mouseup', () => this.handleCanvasMouseUp());
         this.canvas.addEventListener('mouseleave', () => this.handleCanvasMouseUp());
 
-        // Фільтри
         this.filterCheckboxes.forEach((checkbox) => {
             checkbox.addEventListener('change', (e) => this.toggleFilter(e));
         });
 
-        // Кнопки дій
         this.saveBtn.addEventListener('click', () => this.saveToStorage());
         this.undoBtn.addEventListener('click', () => this.undo());
         this.clearBtn.addEventListener('click', () => this.confirmClear());
 
-        // Модальне вікно видалення
         this.cancelDeleteBtn.addEventListener('click', () =>
             this.closeDeleteModal()
         );
@@ -144,14 +111,12 @@ class CityMapConstructor {
             this.confirmDelete()
         );
 
-        // Закриття модального вікна при кліку на фон
         this.deleteModal.addEventListener('click', (e) => {
             if (e.target === this.deleteModal) {
                 this.closeDeleteModal();
             }
         });
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === 'z') {
                 this.undo();
@@ -174,18 +139,11 @@ class CityMapConstructor {
         this.canvasHeight = rect.height;
     }
 
-    // ============================================================
-    // ВИБІР ІНСТРУМЕНТА
-    // ============================================================
-
     selectTool(btn) {
-        // Visibility of system status - показуємо активний режим
         const toolType = btn.dataset.type;
 
-        // Деактивувати попередню кнопку
         this.toolButtons.forEach((b) => b.classList.remove('active'));
 
-        // Активувати нову кнопку
         if (this.selectedTool === toolType) {
             this.selectedTool = null;
             this.updateModeIndicator();
@@ -221,16 +179,11 @@ class CityMapConstructor {
         }
     }
 
-    // ============================================================
-    // ОБРОБКА СОБЫТИЙ ХОЛСТУ
-    // ============================================================
-
     handleCanvasClick(e) {
         const rect = this.canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        // Перевірити чи було нажато на об'єкт
         const clickedObject = this.getObjectAtPoint(x, y);
 
         if (clickedObject) {
@@ -238,7 +191,6 @@ class CityMapConstructor {
             return;
         }
 
-        // Якщо вибрано інструмент - додати об'єкт
         if (this.selectedTool) {
             this.addObject(this.selectedTool, x, y);
             this.deselectTool();
@@ -251,7 +203,6 @@ class CityMapConstructor {
         const y = e.clientY - rect.top;
 
         if (this.isDragging && this.selectedObject) {
-            // Drag & drop функціональність
             this.selectedObject.x =
                 Math.max(
                     this.selectedObject.size / 2,
@@ -266,7 +217,6 @@ class CityMapConstructor {
             return;
         }
 
-        // Змінити курсор на grabbable коли наводимо на об'єкт
         const hoverObject = this.getObjectAtPoint(x, y);
         if (hoverObject && !this.selectedTool) {
             this.canvas.style.cursor = 'grab';
@@ -284,10 +234,6 @@ class CityMapConstructor {
             this.render();
         }
     }
-
-    // ============================================================
-    // ДОДАВАННЯ ОБ'ЄКТІВ
-    // ============================================================
 
     addObject(type, x, y) {
         const config = CONFIG.objects[type];
@@ -307,10 +253,6 @@ class CityMapConstructor {
         this.render();
     }
 
-    // ============================================================
-    // ВИДІЛЕННЯ ОБ'ЄКТА
-    // ============================================================
-
     selectObject(obj, e) {
         e.preventDefault();
         this.selectedObject = obj;
@@ -324,10 +266,6 @@ class CityMapConstructor {
         };
         this.render();
     }
-
-    // ============================================================
-    // ВИДАЛЕННЯ ОБ'ЄКТІВ
-    // ============================================================
 
     showDeleteModal() {
         this.deleteModal.classList.add('show');
@@ -351,23 +289,14 @@ class CityMapConstructor {
         }
     }
 
-    // ============================================================
-    // ФІЛЬТРАЦІЯ
-    // ============================================================
-
     toggleFilter(e) {
         const filterType = e.target.dataset.filter;
         this.filters[filterType] = e.target.checked;
         this.render();
     }
 
-    // ============================================================
-    // СКАСУВАННЯ (User control and freedom)
-    // ============================================================
-
     saveHistory() {
         this.history.push(JSON.stringify(this.objects));
-        // Обмежити історію до 50 кроків
         if (this.history.length > 50) {
             this.history.shift();
         }
@@ -390,10 +319,6 @@ class CityMapConstructor {
         this.undoBtn.disabled = this.history.length === 0;
     }
 
-    // ============================================================
-    // ОЧИЩЕННЯ КАРТИ
-    // ============================================================
-
     confirmClear() {
         if (this.objects.length === 0) {
             this.showNotification('Карта уже порожня');
@@ -408,10 +333,6 @@ class CityMapConstructor {
             this.showNotification('Карта очищена');
         }
     }
-
-    // ============================================================
-    // ЗБЕРЕЖЕННЯ І ЗАВАНТАЖЕННЯ
-    // ============================================================
 
     saveToStorage() {
         localStorage.setItem(CONFIG.storage.key, JSON.stringify(this.objects));
@@ -429,10 +350,6 @@ class CityMapConstructor {
             }
         }
     }
-
-    // ============================================================
-    // СТАТИСТИКА
-    // ============================================================
 
     updateStats() {
         const counts = {
@@ -456,31 +373,23 @@ class CityMapConstructor {
         this.statsElements.parkCount.textContent = counts.park;
     }
 
-    // ============================================================
-    // РЕНДЕРИНГ
-    // ============================================================
-
     render() {
-        // Очистити холст
         while (this.canvas.firstChild) {
             this.canvas.removeChild(this.canvas.firstChild);
         }
 
-        // Відфільтрувати і відобразити об'єкти
         this.objects.forEach((obj) => {
             if (!this.filters[obj.type]) return;
 
             const element = this.createObjectElement(obj);
             this.canvas.appendChild(element);
 
-            // Додати обробник для видалення при подвійному кліку
             element.addEventListener('dblclick', (e) => {
                 e.stopPropagation();
                 this.selectedObject = obj;
                 this.showDeleteModal();
             });
 
-            // Додати обробник для правого кліку (контекстне меню)
             element.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
                 this.selectedObject = obj;
@@ -499,7 +408,6 @@ class CityMapConstructor {
             g.classList.add('dragging');
         }
 
-        // Основний елемент (круг)
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
         circle.setAttribute('cx', obj.x);
         circle.setAttribute('cy', obj.y);
@@ -508,7 +416,6 @@ class CityMapConstructor {
         circle.setAttribute('stroke', '#fff');
         circle.setAttribute('stroke-width', '2');
 
-        // Текст з іконкою
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         text.setAttribute('x', obj.x);
         text.setAttribute('y', obj.y);
@@ -526,12 +433,7 @@ class CityMapConstructor {
         return g;
     }
 
-    // ============================================================
-    // УТИЛІТИ
-    // ============================================================
-
     getObjectAtPoint(x, y) {
-        // Перевірити об'єкти в зворотному порядку (від останнього до першого)
         for (let i = this.objects.length - 1; i >= 0; i--) {
             const obj = this.objects[i];
             if (!this.filters[obj.type]) continue;
@@ -555,10 +457,6 @@ class CityMapConstructor {
         }, 2000);
     }
 }
-
-// ============================================================
-// ІНІЦІАЛІЗАЦІЯ ПІД ЧАС ЗАВАНТАЖЕННЯ СТОРІНКИ
-// ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
     new CityMapConstructor();
